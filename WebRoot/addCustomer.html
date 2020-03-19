@@ -12,11 +12,15 @@
 	table {
 		text-align: left;
 	}
+	#errMsg {
+		color: red;
+	}
   </style>
  </head>
  <body>
   <h1>客户端管理系统—添加客户</h1><hr/>
-  <form>
+  <form id="addCustForm">
+	<div id="errMsg"></div>
 	<table border="1">
 		<tr>
 			<td>客户姓名：</td>
@@ -63,9 +67,44 @@
 			</td>
 		</tr>
 		<tr>
-			<td><input type="button" value="添加客户" onclick="#"></td>
+			<td>描述信息：</td>
+			<td><textarea name="description" rows="6" cols="40"></textarea></td>
+		</tr>
+		<tr>
+			<td><input type="button" value="添加客户" onclick="onSubmit()"/></td>
 		</tr>
 	</table>
   </form>
  </body>
+ <script type="text/javascript">
+	function onSubmit() {
+		var formData = new FormData(document.querySelector("#addCustForm"));
+		var arr = [];
+		for (var item of formData.entries()) {
+			var key = encodeURIComponent(item[0]);
+			if (key == 'preference') {
+				arr.push(key + "=" + encodeURIComponent(formData.getAll('preference').join(',')))
+			} else {
+				arr.push(key + "=" + encodeURIComponent(item[1]));
+			}
+		}
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "servlet/AddCustomerServlet");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+		xhr.send(arr.join('&'));
+		xhr.onreadystatechange = function () {
+			if (xhr.status == 200) {
+				var errMsg = document.querySelector("#errMsg");
+				if (xhr.responseText == "addSucc") {
+					errMsg.innerHTML = "添加成功，3秒后回主页。。。";
+					setTimeout(function () {
+						window.location.href = "index.html";
+					}, 3000);
+				} else {
+					errMsg.innerHTML = xhr.responseText;
+				}
+			}
+		}
+	}
+ </script>
 </html>

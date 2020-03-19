@@ -1,7 +1,7 @@
 package com.duiyi.domain;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Map;
 
 public class Customer implements Serializable {
 	private int id;
@@ -10,7 +10,7 @@ public class Customer implements Serializable {
 	
 	private String gender;
 	
-	private Date birthday;
+	private String birthday;
 	
 	private String cellphone;
 	
@@ -21,6 +21,33 @@ public class Customer implements Serializable {
 	private String type;
 	
 	private String description;
+	
+	public Customer() {
+	}
+	
+	public Customer(Map<String, String[]> map) {
+		this.name = map.get("name")[0];
+		this.gender = map.get("gender")[0];
+		this.birthday = map.get("birthday")[0];
+		this.cellphone = map.get("cellphone")[0];
+		this.email = map.get("email")[0];
+		this.preference = map.get("preference")[0];
+		this.type = map.get("type")[0];
+		this.description = map.get("description")[0];
+	}
+
+	@Override
+	public String toString() {
+		return "id=" + id
+				+ "\nname=" + name
+				+ "\ngender=" + gender
+				+ "\nbirthday=" + birthday
+				+ "\ncellphone=" + cellphone
+				+ "\nemail=" + email
+				+ "\npreference=" + preference
+				+ "\ntype=" + type
+				+ "\ndescription=" + description;
+	}
 
 	public int getId() {
 		return id;
@@ -46,11 +73,11 @@ public class Customer implements Serializable {
 		this.gender = gender;
 	}
 
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 
