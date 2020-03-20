@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+	body {
+		text-align: center;
+	}
+	tr {
+		display: -webkit-flex;
+		display: flex;
+	}
+	th,td {
+		display: -webkit-inline-flex;
+		display: inline-flex;
+		flex-grow: 1;
+		width: 1px;
+		word-break: break-all;
+		text-align: center;
+	}
+  </style>
+ </head>
+ <body>
+  <h1>客户端管理系统—客户列表</h1>
+  <table id="customerTable" border="1" width="100%">
+	<tr>
+		<th>全选</th>
+		<th>客户姓名</th>
+		<th>客户性别</th>
+		<th>出生日期</th>
+		<th>手机号码</th>
+		<th>电子邮箱</th>
+		<th>客户爱好</th>
+		<th>客户类型</th>
+		<th>描述信息</th>
+	</tr>
+  </table>
+ </body>
+ <script>
+	(function() {
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "servlet/AllCustomerServlet");
+		xhr.send();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText != '') {
+				showCustomers(xhr.responseText);
+			}
+		}
+	})();
+
+	function showCustomers(list) {
+		var table = document.querySelector('#customerTable');
+		var jsonList = eval('(' + list + ')');
+		var result = '';
+		for (var i = 0; i < jsonList.length; i++) {
+			var str = '<tr>';
+			for (var key in jsonList[i]) {
+				if (key == 'id') {
+					str += '<td><input type="checkbox" name="id" value=' + jsonList[i][key] + '/></td>';
+				} else {
+					str += '<td>' + jsonList[i][key] + '</td>';
+				}
+			}
+			str += '</tr>';
+			result += str;
+		}
+		table.innerHTML += result; 
+	}
+ </script>
+</html>

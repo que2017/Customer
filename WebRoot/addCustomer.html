@@ -95,7 +95,7 @@
 		xhr.onreadystatechange = function () {
 			if (xhr.status == 200) {
 				var errMsg = document.querySelector("#errMsg");
-				if (xhr.responseText == "addSucc") {
+				if (xhr.readyState == 4 && xhr.responseText == "addSucc") {
 					errMsg.innerHTML = "添加成功，3秒后回主页。。。";
 					setTimeout(function () {
 						window.location.href = "index.html";

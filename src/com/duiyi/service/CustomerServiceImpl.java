@@ -1,5 +1,7 @@
 package com.duiyi.service;
 
+import java.util.List;
+
 import com.duiyi.dao.CustomerDao;
 import com.duiyi.domain.Customer;
 import com.duiyi.exception.MsgException;
@@ -15,6 +17,10 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 		// 如果不存在则添加客户信息到数据库
 		dao.addCustomer(cust);
+	}
+
+	public List<Customer> getAllCustomers() {
+		return dao.getAllCustomers();
 	}
 
 }

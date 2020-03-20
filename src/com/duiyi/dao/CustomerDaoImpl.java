@@ -1,9 +1,11 @@
 package com.duiyi.dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.duiyi.domain.Customer;
 import com.duiyi.util.DaoUtil;
@@ -34,6 +36,17 @@ public class CustomerDaoImpl implements CustomerDao {
 					cust.getPreference(),
 					cust.getType(),
 					cust.getDescription());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	public List<Customer> getAllCustomers() {
+		String sql = "select * from customer";
+		QueryRunner runner = new QueryRunner(DaoUtil.getSource());
+		try {
+			return runner.query(sql, new BeanListHandler<Customer>(Customer.class));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

@@ -38,15 +38,15 @@ public class Customer implements Serializable {
 
 	@Override
 	public String toString() {
-		return "id=" + id
-				+ "\nname=" + name
-				+ "\ngender=" + gender
-				+ "\nbirthday=" + birthday
-				+ "\ncellphone=" + cellphone
-				+ "\nemail=" + email
-				+ "\npreference=" + preference
-				+ "\ntype=" + type
-				+ "\ndescription=" + description;
+		return "\'id\':\'" + id
+				+ "\',\'name\':\'" + name
+				+ "\',\'gender\':\'" + gender
+				+ "\',\'birthday\':\'" + birthday
+				+ "\',\'cellphone\':\'" + cellphone
+				+ "\',\'email\':\'" + email
+				+ "\',\'preference\':\'" + preference
+				+ "\',\'type\':\'" + type
+				+ "\',\'description\':\'" + description + "\'";
 	}
 
 	public int getId() {

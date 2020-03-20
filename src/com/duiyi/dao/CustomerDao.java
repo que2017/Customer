@@ -1,5 +1,7 @@
 package com.duiyi.dao;
 
+import java.util.List;
+
 import com.duiyi.domain.Customer;
 
 public interface CustomerDao {
@@ -17,5 +19,12 @@ public interface CustomerDao {
 	 * @param cust 客户对象
 	 */
 	void addCustomer(Customer cust);
+
+	/**
+	 * 查找所有用户
+	 *
+	 * @return 所有用户列表
+	 */
+	List<Customer> getAllCustomers();
 
 }
