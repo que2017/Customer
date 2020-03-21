@@ -25,10 +25,14 @@
 	.selectAll {
 		flex-grow: 0.5;
 	}
+	#msg {
+		color: red;
+	}
   </style>
  </head>
  <body>
   <h1>客户端管理系统—客户列表</h1><hr/>
+  <div id="msg"></div>
   <table id="customerTable" border="1" width="100%">
 	<tr>
 		<th class="selectAll"><input type="checkbox" name="id"/>全选</th>
@@ -50,13 +54,16 @@
 		xhr.open("GET", "servlet/AllCustomerServlet");
 		xhr.send();
 		xhr.onreadystatechange = function() {
-			if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText != '') {
+			if (xhr.readyState == 4 && xhr.status == 200) {
 				showCustomers(xhr.responseText);
 			}
 		}
 	})();
 	var jsonList;
 	function showCustomers(list) {
+		if (list == '') {
+			return;
+		}
 		var table = document.querySelector('#customerTable');
 		jsonList = eval('(' + list + ')');
 		var result = '';
@@ -69,7 +76,7 @@
 					str += '<td>' + jsonList[i][key] + '</td>';
 				}
 			}
-			str += '<td><a href="#" onclick="onModify(' + i + ')">修改</a><a href="servlet/DeleteCustomerServlet?id=' + jsonList[i]['id'] + '">删除</a></td></tr>';
+			str += '<td><a href="#" onclick="onModify(' + i + ')">修改</a><a href="#" onclick="onDelete(' + jsonList[i]['id'] + ')">删除</a></td></tr>';
 			result += str;
 		}
 		table.innerHTML += result; 
@@ -78,6 +85,22 @@
 		var storage = window.sessionStorage;
 		storage.setItem('data', JSON.stringify(jsonList[id]));
 		window.location.href = 'modifyCustomer.html';
+	}
+	function onDelete(id) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "servlet/DeleteCustomerServlet?id=" + id);
+		xhr.send();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var msg = document.querySelector("#msg");
+				if (xhr.responseText == "deleteSucc") {
+					msg.innerHTML = "删除成功，正在刷新列表。。。";
+				} else {
+					msg.innerHTML = "删除失败，刷新后重试";
+				}
+				window.location.href = "listCustomer.html";
+			}
+		}
 	}
  </script>
 </html>

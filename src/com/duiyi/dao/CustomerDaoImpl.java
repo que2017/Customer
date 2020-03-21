@@ -53,7 +53,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 	}
 
-	public void update(Customer cust) {
+	public void updateCustomer(Customer cust) {
 		String sql = "update customer set name=?,gender=?,birthday=?,cellphone=?,email=?,preference=?,type=?,description=? where id=?";
 		QueryRunner runner = new QueryRunner(DaoUtil.getSource());
 		try {
@@ -71,5 +71,17 @@ public class CustomerDaoImpl implements CustomerDao {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	public void deleteCustomerById(String id) {
+		String sql = "delete from customer where id=?";
+		QueryRunner runner = new QueryRunner(DaoUtil.getSource());
+		try {
+			runner.update(sql, id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		
 	}
 }

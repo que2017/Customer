@@ -23,8 +23,12 @@ public class CustomerServiceImpl implements CustomerService {
 		return dao.getAllCustomers();
 	}
 
-	public void update(Customer cust) {
-		dao.update(cust);
+	public void updateCustomer(Customer cust) {
+		dao.updateCustomer(cust);
+	}
+
+	public void deleteCustomerById(String id) {
+		dao.deleteCustomerById(id);
 	}
 
 }

@@ -26,6 +26,13 @@ public interface CustomerService {
 	 *
 	 * @param cust
 	 */
-	void update(Customer cust);
+	void updateCustomer(Customer cust);
+
+	/**
+	 * 根据id删除客户信息
+	 *
+	 * @param id
+	 */
+	void deleteCustomerById(String id);
 
 }

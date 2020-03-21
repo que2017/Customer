@@ -21,7 +21,7 @@ public class ModifyCustomerServlet extends HttpServlet {
 		cust.setId(Integer.parseInt(request.getParameter("id")));
 		// System.out.println(cust.toString());
 		CustomerService service = BasicFactory.getFactory().getInstance(CustomerService.class);
-		service.update(cust);
+		service.updateCustomer(cust);
 		response.getWriter().write("modifySucc");
 	}
 
