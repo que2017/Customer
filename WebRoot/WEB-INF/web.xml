@@ -24,6 +24,11 @@
     <servlet-name>BatchDeletCustomerServlet</servlet-name>
     <servlet-class>com.duiyi.web.BatchDeletCustomerServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>SelectCustomerServlet</servlet-name>
+    <servlet-class>com.duiyi.web.SelectCustomerServlet</servlet-class>
+  </servlet>
+
 
 
 
@@ -48,6 +53,10 @@
   <servlet-mapping>
     <servlet-name>BatchDeletCustomerServlet</servlet-name>
     <url-pattern>/servlet/BatchDeletCustomerServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SelectCustomerServlet</servlet-name>
+    <url-pattern>/servlet/SelectCustomerServlet</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

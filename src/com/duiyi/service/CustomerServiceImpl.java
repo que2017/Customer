@@ -58,4 +58,8 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 	}
 
+	public List<Customer> selectCustomers(Customer customer) {
+		return dao.selectCustomer(customer);
+	}
+
 }

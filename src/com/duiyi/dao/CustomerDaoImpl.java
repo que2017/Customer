@@ -2,6 +2,7 @@ package com.duiyi.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
@@ -91,5 +92,33 @@ public class CustomerDaoImpl implements CustomerDao {
 		QueryRunner runner = new QueryRunner();
 		runner.update(conn, sql, id);
 		
+	}
+
+	public List<Customer> selectCustomer(Customer cust) {
+		String sql = "select * from customer where 1=1";
+		List<Object> list = new ArrayList<Object>();
+		if (cust.getName() != null && !"".equals(cust.getName())) {
+			sql += " and name like ?";
+			list.add("%" + cust.getName() + "%");
+		}
+		if (cust.getGender() != null && !"".equals(cust.getGender())) {
+			sql += " and gender=?";
+			list.add(cust.getGender());
+		}
+		if (cust.getType() != null && !"".equals(cust.getType())) {
+			sql += " and type=?";
+			list.add(cust.getType());
+		}
+		QueryRunner runner = new QueryRunner(DaoUtil.getSource());
+		try {
+			if (list.size() > 0) {
+				return runner.query(sql, new BeanListHandler<Customer>(Customer.class), list.toArray());
+			} else {
+				return runner.query(sql, new BeanListHandler<Customer>(Customer.class));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 }

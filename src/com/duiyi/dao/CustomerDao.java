@@ -52,4 +52,12 @@ public interface CustomerDao {
 	 */
 	void deleteCustomerByIdWithTrans(Connection conn, String id) throws SQLException;
 
+	/**
+	 * 根据customer中的条件查询客户，条件包括客户姓名、性别、类型
+	 *
+	 * @param customer
+	 * @return
+	 */
+	List<Customer> selectCustomer(Customer customer);
+
 }

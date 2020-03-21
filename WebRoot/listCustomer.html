@@ -32,6 +32,27 @@
  </head>
  <body>
   <h1>客户端管理系统—客户列表</h1><hr/>
+  <form id="selectCondition">
+	客户姓名：
+	<input type="text" name="name"/>
+	客户性别：
+	<select name="gender">
+		<option value=""></option>
+		<option value="男">男</option>
+		<option value="女">女</option>
+	</select>
+	客户类型：
+	<select name="type">
+		<option value=""></option>
+		<option value="钻石客户">钻石客户</option>
+		<option value="白金客户">白金客户</option>
+		<option value="黄金客户">黄金客户</option>
+		<option value="白银客户">白银客户</option>
+		<option value="青铜客户">青铜客户</option>
+		<option value="普通客户">普通客户</option>
+	</select>
+	<input type="button" value="查询客户" onclick="conditionSelect()"/>
+  </form>
   <div id="msg"></div>
   <table id="customerTable" border="1" width="100%">
 	<tr>
@@ -50,6 +71,9 @@
   <input type="button" value="批量删除" onclick="batchDelete()"/>
  </body>
  <script>
+	var jsonList;
+	var table = document.querySelector('#customerTable');
+	var tableHeader = table.innerHTML;
 	(function() {
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET", "servlet/AllCustomerServlet");
@@ -60,12 +84,27 @@
 			}
 		}
 	})();
-	var jsonList;
+	function conditionSelect() {
+		var formData = new FormData(document.querySelector('#selectCondition'));
+		var arr = [];
+		for (var item of formData.entries()) {
+			arr.push(encodeURIComponent(item[0]) + '=' + encodeURIComponent(item[1]));
+		}
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'servlet/SelectCustomerServlet');
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+		xhr.send(arr.join('&'));
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				showCustomers(xhr.responseText);
+			}
+		}
+	}
 	function showCustomers(list) {
+		table.innerHTML = tableHeader;
 		if (list == '') {
 			return;
 		}
-		var table = document.querySelector('#customerTable');
 		jsonList = eval('(' + list + ')');
 		var result = '';
 		for (var i = 0; i < jsonList.length; i++) {

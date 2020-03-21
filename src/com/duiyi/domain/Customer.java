@@ -26,14 +26,14 @@ public class Customer implements Serializable {
 	}
 	
 	public Customer(Map<String, String[]> map) {
-		this.name = map.get("name")[0];
-		this.gender = map.get("gender")[0];
-		this.birthday = map.get("birthday")[0];
-		this.cellphone = map.get("cellphone")[0];
-		this.email = map.get("email")[0];
-		this.preference = map.get("preference")[0];
-		this.type = map.get("type")[0];
-		this.description = map.get("description")[0];
+		this.name = (map.get("name") != null) ? map.get("name")[0] : "";
+		this.gender = map.get("gender") != null ? map.get("gender")[0] : "";
+		this.birthday = map.get("birthday") != null ? map.get("birthday")[0] : "";
+		this.cellphone = map.get("cellphone") != null ? map.get("cellphone")[0] : "";
+		this.email = map.get("email") != null ? map.get("email")[0] : "";
+		this.preference = map.get("preference") != null ? map.get("preference")[0] : "";
+		this.type = map.get("type") != null ? map.get("type")[0] : "";
+		this.description = map.get("description") != null ? map.get("description")[0] : "";
 	}
 
 	@Override
