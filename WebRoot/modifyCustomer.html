@@ -24,7 +24,7 @@
 	<table border="1">
 		<tr>
 			<td>客户姓名：</td>
-			<td><input type="text" name="name"/></td>
+			<td><input type="text" name="name" readonly  unselectable="on" style="background-color: #ccc"/></td>
 		</tr>
 		<tr>
 			<td>客户性别：</td>
@@ -77,9 +77,69 @@
   </form>
  </body>
  <script>
+	var id;
 	(function() {
 		var storage = window.sessionStorage;
 		var dataJson = JSON.parse(storage.getItem('data'));
+		for (var key in dataJson) {
+			if (key == 'id') {
+				id = dataJson['id'];
+				continue;
+			}
+			var elems = document.getElementsByName(key);
+			switch (key) {
+				case 'gender': {
+					for (var i = 0; i < elems.length; i++) {
+						if (elems[i].value == dataJson[key]) {
+							elems[i].checked = true;
+						}
+					}
+					break;
+				}
+				case 'preference': {
+					var str = ',' + dataJson[key] + ',';
+					for (var i = 0; i < elems.length; i++) {
+						if (str.includes(',' + elems[i].value + ',')) {
+							elems[i].checked = true;
+						}
+					}
+					break;
+				}
+				default: {
+					elems[0].value = dataJson[key];
+				}
+			}
+		}
 	})();
+	function onModify() {
+		var formData = new FormData(document.querySelector('#modifyCustForm'));
+		var arr = [];
+		arr.push('id=' + id);
+		for (var item of formData.entries()) {
+			var key = encodeURIComponent(item[0]);
+			if (key == 'preference') {
+				arr.push(key + '=' + encodeURIComponent(formData.getAll('preference').join(',')));
+			} else {
+				arr.push(key + '=' + encodeURIComponent(item[1]));
+			}
+		}
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'servlet/ModifyCustomerServlet');
+		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+		xhr.send(arr.join('&'));
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var errMsg = document.querySelector('#errMsg');
+				if (xhr.responseText == 'modifySucc') {
+					errMsg.innerHTML = '修改成功，3秒后回客户列表界面。。。'
+					setTimeout(function () {
+						window.location.href = 'listCustomer.html';
+					}, 3000);
+				} else {
+					errMsg.innerHTML = xhr.responseText;
+				}
+			}
+		}
+	}
  </script>
 </html>

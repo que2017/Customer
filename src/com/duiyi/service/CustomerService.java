@@ -21,4 +21,11 @@ public interface CustomerService {
 	 */
 	List<Customer> getAllCustomers();
 
+	/**
+	 * 更新客户信息
+	 *
+	 * @param cust
+	 */
+	void update(Customer cust);
+
 }

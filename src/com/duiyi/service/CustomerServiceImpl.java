@@ -23,4 +23,8 @@ public class CustomerServiceImpl implements CustomerService {
 		return dao.getAllCustomers();
 	}
 
+	public void update(Customer cust) {
+		dao.update(cust);
+	}
+
 }

@@ -27,4 +27,11 @@ public interface CustomerDao {
 	 */
 	List<Customer> getAllCustomers();
 
+	/**
+	 * 更新客户信息
+	 *
+	 * @param cust
+	 */
+	void update(Customer cust);
+
 }

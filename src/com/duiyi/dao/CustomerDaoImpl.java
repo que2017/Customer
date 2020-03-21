@@ -52,4 +52,24 @@ public class CustomerDaoImpl implements CustomerDao {
 			throw new RuntimeException(e);
 		}
 	}
+
+	public void update(Customer cust) {
+		String sql = "update customer set name=?,gender=?,birthday=?,cellphone=?,email=?,preference=?,type=?,description=? where id=?";
+		QueryRunner runner = new QueryRunner(DaoUtil.getSource());
+		try {
+			runner.update(sql,
+						cust.getName(),
+						cust.getGender(),
+						cust.getBirthday(),
+						cust.getCellphone(),
+						cust.getEmail(),
+						cust.getPreference(),
+						cust.getType(),
+						cust.getDescription(),
+						cust.getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
 }
