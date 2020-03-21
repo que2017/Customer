@@ -1,5 +1,6 @@
 package com.duiyi.dao;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -82,6 +83,13 @@ public class CustomerDaoImpl implements CustomerDao {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+		
+	}
+
+	public void deleteCustomerByIdWithTrans(Connection conn, String id) throws SQLException {
+		String sql = "delete from customer where id=?";
+		QueryRunner runner = new QueryRunner();
+		runner.update(conn, sql, id);
 		
 	}
 }

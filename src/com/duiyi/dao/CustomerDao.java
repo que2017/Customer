@@ -1,5 +1,7 @@
 package com.duiyi.dao;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.duiyi.domain.Customer;
@@ -40,5 +42,14 @@ public interface CustomerDao {
 	 * @param id
 	 */
 	void deleteCustomerById(String id);
+
+	/**
+	 * 根据id删除客户信息，用于数据库事务需求
+	 *
+	 * @param conn
+	 * @param id
+	 * @throws SQLException 
+	 */
+	void deleteCustomerByIdWithTrans(Connection conn, String id) throws SQLException;
 
 }

@@ -35,4 +35,11 @@ public interface CustomerService {
 	 */
 	void deleteCustomerById(String id);
 
+	/**
+	 * 根据id字符串数组，批量删除客户信息
+	 *
+	 * @param ids
+	 */
+	void batchDeletCustomerById(String[] ids);
+
 }

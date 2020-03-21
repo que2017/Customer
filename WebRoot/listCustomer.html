@@ -35,7 +35,7 @@
   <div id="msg"></div>
   <table id="customerTable" border="1" width="100%">
 	<tr>
-		<th class="selectAll"><input type="checkbox" name="id"/>全选</th>
+		<th class="selectAll"><input type="checkbox" name="selAll" onclick="selectAll(this)"/>全选</th>
 		<th>客户姓名</th>
 		<th>客户性别</th>
 		<th>出生日期</th>
@@ -47,6 +47,7 @@
 		<th>操作</th>
 	</tr>
   </table>
+  <input type="button" value="批量删除" onclick="batchDelete()"/>
  </body>
  <script>
 	(function() {
@@ -71,7 +72,7 @@
 			var str = '<tr>';
 			for (var key in jsonList[i]) {
 				if (key == 'id') {
-					str += '<td class="selectAll"><input type="checkbox" name="id" value=' + jsonList[i][key] + '/></td>';
+					str += '<td class="selectAll"><input type="checkbox" name="id" value="' + jsonList[i][key] + '"/></td>';
 				} else {
 					str += '<td>' + jsonList[i][key] + '</td>';
 				}
@@ -97,6 +98,36 @@
 					msg.innerHTML = "删除成功，正在刷新列表。。。";
 				} else {
 					msg.innerHTML = "删除失败，刷新后重试";
+				}
+				window.location.href = "listCustomer.html";
+			}
+		}
+	}
+	function selectAll(obj) {
+		var state = obj.checked;
+		var elems = document.getElementsByName('id');
+		for (var i = 0; i < elems.length; i++) {
+			elems[i].checked = state;
+		}
+	}
+	function batchDelete() {
+		var arr = [];
+		var elems = document.getElementsByName('id');
+		for (var i = 0; i < elems.length; i++) {
+			if (elems[i].checked == true) {
+				arr.push(elems[i].value);
+			}
+		}
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', 'servlet/BatchDeletCustomerServlet?id=' + arr.join(','));
+		xhr.send();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var msg = document.querySelector("#msg");
+				if (xhr.responseText == 'batchDelSucc') {
+					msg.innerHTML = '批量删除成功，正在刷新列表。。。';
+				} else {
+					msg.innerHTML = '批量删除失败，刷新后重试';
 				}
 				window.location.href = "listCustomer.html";
 			}
