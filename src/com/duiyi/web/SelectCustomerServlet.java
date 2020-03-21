@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.duiyi.domain.Customer;
 import com.duiyi.factory.BasicFactory;
 import com.duiyi.service.CustomerService;
+import com.duiyi.util.JSONUtil;
 
 public class SelectCustomerServlet extends HttpServlet {
 
@@ -22,16 +23,16 @@ public class SelectCustomerServlet extends HttpServlet {
 		
 		CustomerService service = BasicFactory.getFactory().getInstance(CustomerService.class);
 		List<Customer> custList = service.selectCustomers(customer);
-		if (custList == null || custList.isEmpty()) {
-			return;
-		}
-		StringBuffer buff = new StringBuffer();
-		buff.append("[");
-		for (Customer cust : custList) {
-			buff.append("{" + cust.toString() + "},");
-		}
-		String jsonStr = buff.substring(0, buff.length() - 1) + "]";
-		response.getWriter().write(jsonStr);
+//		if (custList == null || custList.isEmpty()) {
+//			return;
+//		}
+//		StringBuffer buff = new StringBuffer();
+//		buff.append("[");
+//		for (Customer cust : custList) {
+//			buff.append("{" + cust.toString() + "},");
+//		}
+//		String jsonStr = buff.substring(0, buff.length() - 1) + "]";
+		response.getWriter().write(JSONUtil.listToJsonString(custList));
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)

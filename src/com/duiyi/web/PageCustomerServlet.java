@@ -13,25 +13,32 @@ import com.duiyi.factory.BasicFactory;
 import com.duiyi.service.CustomerService;
 import com.duiyi.util.JSONUtil;
 
-public class AllCustomerServlet extends HttpServlet {
+public class PageCustomerServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 查询所有客户信息，封装成JSON字符串发送给浏览器
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
+		int page;
+		try {
+			page = Integer.parseInt(request.getParameter("page"));
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
+			return;
+		}
 		CustomerService service = BasicFactory.getFactory().getInstance(CustomerService.class);
-		List<Customer> custList = service.getAllCustomers();
-//		if (custList == null || custList.isEmpty()) {
-//			return;
-//		}
-//		StringBuffer buff = new StringBuffer();
-//		buff.append("[");
-//		for (Customer cust : custList) {
-//			buff.append("{" + cust.toString() + "},");
-//		}
-//		String jsonStr = buff.substring(0, buff.length() - 1) + "]";
-		response.getWriter().write(JSONUtil.listToJsonString(custList));
+		// 查询分页数据
+		List<Customer> custList = service.pageSelectCustomer(page, 5, null);
+		// 查询数据总数
+		int totalCount = service.getTotalNumber(null);
+		int totalPage = (totalCount - 1) / 5 + 1;
+		// 组织成JSON格式的data返回给浏览器
+		StringBuffer buff = new StringBuffer();
+		buff.append("{'totalCount':'" + totalCount + "',");
+		buff.append("'totalPage':'" + totalPage + "',");
+		buff.append("'currPage':'" + page + "',");
+		buff.append("'list':" + JSONUtil.listToJsonString(custList) + "}");
+		response.getWriter().write(buff.toString());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)

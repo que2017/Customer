@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.duiyi.domain.Customer;
 import com.duiyi.util.DaoUtil;
@@ -120,5 +121,35 @@ public class CustomerDaoImpl implements CustomerDao {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	public List<Customer> pageSelectCustomer(int form, int count, Customer cust) {
+		if (cust == null) {
+			// 不指定查询参数，返回所有客户数据
+			String sql = "select * from customer limit ?,?";
+			QueryRunner runner = new QueryRunner(DaoUtil.getSource());
+			try {
+				return runner.query(sql, new BeanListHandler<Customer>(Customer.class), form, count);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+		return null;
+	}
+
+	public int getTotalPages(Customer cust) {
+		if (cust == null) {
+			// 不指定查询参数，返回所有客户数据的总数
+			String sql = "select count(*) from customer";
+			QueryRunner runner = new QueryRunner(DaoUtil.getSource());
+			try {
+				return ((Long) runner.query(sql, new ScalarHandler())).intValue();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+		return 0;
 	}
 }

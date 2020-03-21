@@ -28,6 +28,10 @@
 	#msg {
 		color: red;
 	}
+	.batchDel {
+		float: left;
+		font-size: 16px;
+	}
   </style>
  </head>
  <body>
@@ -68,7 +72,6 @@
 		<th>操作</th>
 	</tr>
   </table>
-  <input type="button" value="批量删除" onclick="batchDelete()"/>
  </body>
  <script>
 	var jsonList;
@@ -83,7 +86,18 @@
 				showCustomers(xhr.responseText);
 			}
 		}
+		jumpToPage(1);
 	})();
+	function jumpToPage(page) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "servlet/PageCustomerServlet?page=" + page);
+		xhr.send();
+		xhr.onreadystatechange = function () {
+			if (xhr.readystate == 4 && xhr.status == 200) {
+				showCustomers(xhr.responseText);
+			}
+		}
+	}
 	function conditionSelect() {
 		var formData = new FormData(document.querySelector('#selectCondition'));
 		var arr = [];

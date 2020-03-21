@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <style>
+	body {
+		text-align: center;
+	}
+	tr {
+		display: -webkit-flex;
+		display: flex;
+	}
+	th,td {
+		display: -webkit-inline-flex;
+		display: inline-flex;
+		flex-grow: 1;
+		width: 1px;
+		word-break: break-all;
+		text-align: center;
+	}
+	.jumpPage {
+		width: 48px;
+	}
+	.linkToPage {
+		margin: 0 6px;
+		color: blue;
+		cursor: pointer;
+	}
+	.linkToPageBackground {
+		background-color: #ccc;
+	}
+  </style>
+ </head>
+ <body>
+  <h1>客户端管理系统—分页显示</h1><hr/>
+  <table id="customerTable" border="1" width="100%">
+	<tr>
+		<th>客户姓名</th>
+		<th>客户性别</th>
+		<th>出生日期</th>
+		<th>手机号码</th>
+		<th>电子邮箱</th>
+		<th>客户爱好</th>
+		<th>客户类型</th>
+		<th>描述信息</th>
+	</tr>
+  </table>
+  <div id="pageMsg">
+	<span id="totalPages"></span>
+	<span id="currentPage"></span>
+	<span class="linkToPage" onclick="prePage()">上一页</span>
+	<span id="pageNum"></span>
+	<span class="linkToPage" onclick="nextPage()">下一页</span>
+	<span>跳到<input type="text" class="jumpPage" onblur="onBlur(this)">页</span>
+  </div>
+ </body>
+ <script>
+	var oTable = document.querySelector('#customerTable');
+	var oTotalPages = document.querySelector('#totalPages');
+	var oCurrentPage = document.querySelector('#currentPage');
+	var oPageNum = document.querySelector('#pageNum');
+	var tableHeader = oTable.innerHTML;
+	var totalPage, currPage;
+	(function () {
+		jumpToPage(1);
+	})();
+	function prePage() {
+		if (currPage == 1) {
+			return;
+		}
+		jumpToPage(currPage - 1);
+	}
+	function nextPage() {
+		if (currPage == totalPage) {
+			return;
+		}
+		jumpToPage(currPage + 1);
+	}
+	function onBlur(obj) {
+		var value = obj.value;
+		if (value < 1 || value > totalPage) {
+			alert("页码超出范围");
+			obj.value = currPage;
+			return;
+		}
+		jumpToPage(value);
+	}
+	function jumpToPage(page) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "servlet/PageCustomerServlet?page=" + page);
+		xhr.send();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				showCustomers(xhr.responseText);
+			}
+		}
+	}
+	function showCustomers(data) {
+		oTable.innerHTML = tableHeader;
+		if (data == '') {
+			return;
+		}
+		var jsonData = eval('(' + data + ')');
+		var jsonList = jsonData['list'];
+		var result = '';
+		for (var i = 0; i < jsonList.length; i++) {
+			var str = '<tr>';
+			for (var key in jsonList[i]) {
+				str += '<td>' + jsonList[i][key] + '</td>';
+			}
+			str += '</tr>';
+			result += str;
+		}
+		oTable.innerHTML += result;
+		totalPage = parseInt(jsonData['totalPage']);
+		currPage = parseInt(jsonData['currPage']);
+		oTotalPages.innerHTML = '共' + totalPage + '页';
+		oCurrentPage.innerHTML = '第' + currPage + '页'
+		// 计算pageNum填入的内容
+		var count = totalPage >= 5 ? 5 : totalPage;
+		var diff = totalPage - currPage;
+		result = '';
+		for (var i = 0; i < count; i++) {
+			var num;
+			if (currPage < 3) {
+				num = i + 1;
+			} else if (diff < 3) {
+				num = totalPage - 4 + i;
+			} else {
+				num = currPage -2 + i;
+			}
+			if (num == currPage) {
+				result += '<span class="linkToPage linkToPageBackground">' + num + '</span>';
+			} else {
+				result += '<span class="linkToPage" onclick="jumpToPage(' + num + ')">' + num + '</span>';
+			}
+		}
+		oPageNum.innerHTML = result;
+	}
+ </script>
+</html>

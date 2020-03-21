@@ -62,4 +62,12 @@ public class CustomerServiceImpl implements CustomerService {
 		return dao.selectCustomer(customer);
 	}
 
+	public List<Customer> pageSelectCustomer(int page, int count, Customer cust) {
+		return dao.pageSelectCustomer((page - 1) * count + 1, count, cust);
+	}
+
+	public int getTotalNumber(Customer cust) {
+		return dao.getTotalPages(cust);
+	}
+
 }

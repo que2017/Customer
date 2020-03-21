@@ -60,4 +60,21 @@ public interface CustomerDao {
 	 */
 	List<Customer> selectCustomer(Customer customer);
 
+	/**
+	 * 根据页码及指定条件查找客户数据，每页5条
+	 *
+	 * @param page
+	 * @param cust
+	 * @return
+	 */
+	List<Customer> pageSelectCustomer(int page, int count, Customer cust);
+
+	/**
+	 * 根据指定条件获取总页数，每页5条
+	 *
+	 * @param cust
+	 * @return
+	 */
+	int getTotalPages(Customer cust);
+
 }

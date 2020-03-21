@@ -50,4 +50,18 @@ public interface CustomerService {
 	 */
 	List<Customer> selectCustomers(Customer customer);
 
+	/**
+	 * 根据页码及指定条件查找客户数据，每页5条
+	 *
+	 * @param page
+	 */
+	List<Customer> pageSelectCustomer(int page, int count, Customer cust);
+
+	/**
+	 * 根据指定条件获取客户的总数
+	 *
+	 * @return
+	 */
+	int getTotalNumber(Customer cust);
+
 }
