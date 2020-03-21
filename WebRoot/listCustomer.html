@@ -19,13 +19,19 @@
 		word-break: break-all;
 		text-align: center;
 	}
+	a {
+		margin: 0 16px 0 0;
+	}
+	.selectAll {
+		flex-grow: 0.5;
+	}
   </style>
  </head>
  <body>
-  <h1>客户端管理系统—客户列表</h1>
+  <h1>客户端管理系统—客户列表</h1><hr/>
   <table id="customerTable" border="1" width="100%">
 	<tr>
-		<th>全选</th>
+		<th class="selectAll"><input type="checkbox" name="id"/>全选</th>
 		<th>客户姓名</th>
 		<th>客户性别</th>
 		<th>出生日期</th>
@@ -34,6 +40,7 @@
 		<th>客户爱好</th>
 		<th>客户类型</th>
 		<th>描述信息</th>
+		<th>操作</th>
 	</tr>
   </table>
  </body>
@@ -48,24 +55,29 @@
 			}
 		}
 	})();
-
+	var jsonList;
 	function showCustomers(list) {
 		var table = document.querySelector('#customerTable');
-		var jsonList = eval('(' + list + ')');
+		jsonList = eval('(' + list + ')');
 		var result = '';
 		for (var i = 0; i < jsonList.length; i++) {
 			var str = '<tr>';
 			for (var key in jsonList[i]) {
 				if (key == 'id') {
-					str += '<td><input type="checkbox" name="id" value=' + jsonList[i][key] + '/></td>';
+					str += '<td class="selectAll"><input type="checkbox" name="id" value=' + jsonList[i][key] + '/></td>';
 				} else {
 					str += '<td>' + jsonList[i][key] + '</td>';
 				}
 			}
-			str += '</tr>';
+			str += '<td><a href="#" onclick="onModify(' + i + ')">修改</a><a href="servlet/DeleteCustomerServlet?id=' + jsonList[i]['id'] + '">删除</a></td></tr>';
 			result += str;
 		}
 		table.innerHTML += result; 
+	}
+	function onModify(id) {
+		var storage = window.sessionStorage;
+		storage.setItem('data', JSON.stringify(jsonList[id]));
+		window.location.href = 'modifyCustomer.html';
 	}
  </script>
 </html>

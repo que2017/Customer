@@ -12,6 +12,11 @@
     <servlet-name>AllCustomerServlet</servlet-name>
     <servlet-class>com.duiyi.web.AllCustomerServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>ModifyCustomerServlet</servlet-name>
+    <servlet-class>com.duiyi.web.ModifyCustomerServlet</servlet-class>
+  </servlet>
+
 
 
   <servlet-mapping>
@@ -21,6 +26,10 @@
   <servlet-mapping>
     <servlet-name>AllCustomerServlet</servlet-name>
     <url-pattern>/servlet/AllCustomerServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ModifyCustomerServlet</servlet-name>
+    <url-pattern>/servlet/ModifyCustomerServlet</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
